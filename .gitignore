@@ -1,0 +1,32 @@
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# Build outputs
+*.img
+*.bin
+*.gz
+*.tar
+*.zip
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
