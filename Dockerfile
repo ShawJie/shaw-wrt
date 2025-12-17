@@ -18,12 +18,17 @@ USER shaw
 WORKDIR /home/shaw
 
 COPY --chown=shaw:shaw ./setup.sh /home/shaw/setup.sh
+COPY --chown=shaw:shaw ./entrypoint.sh /home/shaw/entrypoint.sh
 COPY --chown=shaw:shaw ./conf/feeds.custom.conf /home/shaw/conf/feeds.custom.conf
 COPY --chown=shaw:shaw ./conf/initial_script.sh /home/shaw/conf/initial_script.sh
 
-RUN chmod +x /home/shaw/setup.sh && \
+RUN chmod +x /home/shaw/setup.sh /home/shaw/entrypoint.sh && \
+    mkdir -p /home/shaw/output && \
     /home/shaw/setup.sh -b openwrt-24.10 -p https://ghfast.top
+
+VOLUME /home/shaw/output
 
 WORKDIR /home/shaw/immortalwrt
 
-CMD ["make", "menuconfig"]
+ENTRYPOINT ["/home/shaw/entrypoint.sh"]
+CMD ["shell"]

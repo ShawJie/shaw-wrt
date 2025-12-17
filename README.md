@@ -8,6 +8,7 @@
 .
 ├── Dockerfile              # Docker 构建镜像配置
 ├── setup.sh                # 自动化设置脚本
+├── entrypoint.sh           # Docker 入口脚本
 ├── conf/
 │   ├── sources.list        # Debian APT 源配置
 │   ├── feeds.custom.conf   # 自定义 OpenWrt feeds
@@ -25,14 +26,35 @@ docker build -t shaw-wrt .
 
 ### 2. 运行容器
 
+容器支持通过 action 参数执行不同操作，结果会输出到挂载的 Volume 中。
+
+| Action | 说明 |
+|--------|------|
+| `menuconfig` | 运行 make menuconfig，完成后复制 .config 到 output |
+| `download` | 下载编译依赖 |
+| `make` | 编译固件，完成后复制产物到 output |
+| `clean` | 清理编译文件 |
+| `dirclean` | 清理编译和工具链文件 |
+| `shell` | 进入交互式 shell（默认） |
+
 ```bash
-docker run -it --name shaw-wrt shaw-wrt
+# 配置编译选项
+docker run -it -v ./output:/home/shaw/output shaw-wrt menuconfig
+
+# 下载依赖
+docker run -v ./output:/home/shaw/output shaw-wrt download
+
+# 编译固件
+docker run -v ./output:/home/shaw/output shaw-wrt make
+
+# 进入交互式 shell
+docker run -it -v ./output:/home/shaw/output shaw-wrt shell
 ```
 
 ### 3. 连接到已有容器
 
 ```bash
-docker exec -it shaw-wrt bash
+docker exec -it <container_name> bash
 ```
 
 ## 配置说明
@@ -76,20 +98,20 @@ src-git <name> https://github.com/<user>/<repo>.git;<branch>
 
 ## 编译固件
 
-进入容器后：
+使用 Docker action 命令编译：
 
 ```bash
-cd /home/shaw/immortalwrt
+# 1. 配置编译选项
+docker run -it -v ./output:/home/shaw/output shaw-wrt menuconfig
 
-# 配置编译选项
-make menuconfig
+# 2. 下载依赖
+docker run -v ./output:/home/shaw/output shaw-wrt download
 
-# 下载依赖
-make download -j$(nproc)
-
-# 编译固件
-make -j$(nproc) V=s
+# 3. 编译固件
+docker run -v ./output:/home/shaw/output shaw-wrt make
 ```
+
+编译完成后，固件文件会被复制到 `./output/` 目录。
 
 ## License
 
