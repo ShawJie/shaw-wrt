@@ -8,7 +8,6 @@
 .
 ├── Dockerfile              # Docker 构建镜像配置
 ├── setup.sh                # 自动化设置脚本
-├── attach.sh               # Docker 容器连接脚本
 ├── conf/
 │   ├── sources.list        # Debian APT 源配置
 │   ├── feeds.custom.conf   # 自定义 OpenWrt feeds
@@ -33,7 +32,7 @@ docker run -it --name shaw-wrt shaw-wrt
 ### 3. 连接到已有容器
 
 ```bash
-./attach.sh
+docker exec -it shaw-wrt bash
 ```
 
 ## 配置说明
