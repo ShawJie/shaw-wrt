@@ -31,18 +31,12 @@ docker build -t shaw-wrt .
 | Action | 说明 |
 |--------|------|
 | `menuconfig` | 运行 make menuconfig，完成后复制 .config 到 output |
-| `download` | 下载编译依赖 |
 | `make` | 编译固件，完成后复制产物到 output |
-| `clean` | 清理编译文件 |
-| `dirclean` | 清理编译和工具链文件 |
 | `shell` | 进入交互式 shell（默认） |
 
 ```bash
 # 配置编译选项
 docker run -it -v ./output:/home/shaw/output shaw-wrt menuconfig
-
-# 下载依赖
-docker run -v ./output:/home/shaw/output shaw-wrt download
 
 # 编译固件
 docker run -v ./output:/home/shaw/output shaw-wrt make
@@ -104,10 +98,7 @@ src-git <name> https://github.com/<user>/<repo>.git;<branch>
 # 1. 配置编译选项
 docker run -it -v ./output:/home/shaw/output shaw-wrt menuconfig
 
-# 2. 下载依赖
-docker run -v ./output:/home/shaw/output shaw-wrt download
-
-# 3. 编译固件
+# 2. 编译固件
 docker run -v ./output:/home/shaw/output shaw-wrt make
 ```
 

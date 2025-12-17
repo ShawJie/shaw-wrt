@@ -34,15 +34,11 @@ Usage: docker run <image> <action> [options]
 
 Actions:
     menuconfig      Run make menuconfig (interactive)
-    download        Download package sources
     make            Build the firmware
-    clean           Clean build files
-    dirclean        Clean build and toolchain files
     shell           Start an interactive shell
 
 Examples:
     docker run -it -v ./output:/home/shaw/output shaw-wrt menuconfig
-    docker run -v ./output:/home/shaw/output shaw-wrt download
     docker run -v ./output:/home/shaw/output shaw-wrt make
     docker run -it -v ./output:/home/shaw/output shaw-wrt shell
 EOF
@@ -58,27 +54,12 @@ case "$ACTION" in
         make menuconfig
         copy_config
         ;;
-    download)
-        echo "==> Downloading package sources..."
-        make download -j$(nproc)
-        echo "==> Download completed."
-        ;;
     make|build)
         echo "==> Building firmware..."
         make -j$(nproc) V=s
         copy_config
         copy_build_artifacts
         echo "==> Build completed."
-        ;;
-    clean)
-        echo "==> Cleaning build files..."
-        make clean
-        echo "==> Clean completed."
-        ;;
-    dirclean)
-        echo "==> Cleaning build and toolchain files..."
-        make dirclean
-        echo "==> Dirclean completed."
         ;;
     shell|bash)
         echo "==> Starting interactive shell..."
