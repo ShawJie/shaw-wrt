@@ -56,7 +56,7 @@ case "$ACTION" in
         ;;
     make|build)
         echo "==> Building firmware..."
-        make -j$(nproc) V=s
+        make -j1 V=s
         copy_config
         copy_build_artifacts
         echo "==> Build completed."
